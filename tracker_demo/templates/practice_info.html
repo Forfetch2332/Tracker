@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h3 class="mb-3">{{ practice.title }}</h3>
+
+<!-- Описание -->
+<p class="text-muted">{{ practice.description }}</p>
+
+<!-- Цитата -->
+{% if practice.quote %}
+<blockquote class="blockquote mt-3" style="font-size: 1rem;">
+    {{ practice.quote }}
+</blockquote>
+{% endif %}
+
+<!-- Структура формы -->
+{% if schema %}
+    <h5 class="mt-4">Что включает практика</h5>
+
+    <ul class="list-group mt-2">
+        {% for field in schema %}
+            <li class="list-group-item">
+                <strong>{{ field.label }}</strong>
+                <span class="text-muted">({{ field.type }})</span>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
+<!-- Кнопки -->
+<div class="mt-4">
+    <a href="{{ url_for('practice_form', practice_id=practice.id) }}"
+       class="btn btn-success">
+        Выполнить практику
+    </a>
+
+    <a href="{{ url_for('guide_page') }}"
+       class="btn btn-secondary ms-2">
+        Назад
+    </a>
+</div>
+
+{% endblock %}

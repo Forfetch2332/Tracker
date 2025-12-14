@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h3 class="mb-4">Практики</h3>
+
+<p class="text-muted">
+    Здесь собраны описания всех практик и их смысл.
+</p>
+
+<div class="list-group mt-3">
+
+    {% for practice in practices %}
+        <a href="{{ url_for('practice_info', pid=practice.id) }}"
+           class="list-group-item list-group-item-action">
+            {{ practice.title }}
+        </a>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

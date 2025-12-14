@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h3>Аналитика по практикам</h3>
+
+<div class="list-group mt-3">
+
+    {% for practice in items %}
+        <a href="{{ url_for('practice_detail', pid=practice.id) }}"
+           class="list-group-item list-group-item-action">
+            {{ practice.title }}
+        </a>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
