@@ -1,33 +1,63 @@
 {% extends "layout.html" %}
+
 {% block content %}
+<div class="container py-4">
 
-<h3 class="mb-3">{{ practice.title }}</h3>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
 
-<p class="text-muted">{{ practice.description }}</p>
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body p-4">
 
-<form method="POST" class="mt-4">
+                    <h2 class="fw-bold mb-3">{{ practice.title }}</h2>
 
-    {% for field in schema %}
-        <div class="mb-3">
-            <label class="form-label">{{ field.label }}</label>
+                    <p class="text-muted">
+                        Выполни практику, ответив на вопросы ниже.
+                    </p>
 
-            {% if field.type == "text" %}
-                <input type="text"
-                       class="form-control"
-                       name="{{ field.key }}"
-                       required>
-            {% endif %}
+                    <hr class="my-4">
+
+                    <form method="POST">
+
+                        {% for field in schema %}
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                {{ field.label }}
+                            </label>
+
+                            {% if field.type == "text" %}
+                                <textarea class="form-control" name="{{ field.key }}" rows="3"
+                                          placeholder="Введите ваш ответ..."></textarea>
+
+                            {% elif field.type == "number" %}
+                                <input type="number" class="form-control" name="{{ field.key }}">
+
+                            {% elif field.type == "select" %}
+                                <select class="form-select" name="{{ field.key }}">
+                                    {% for option in field.options %}
+                                        <option value="{{ option }}">{{ option }}</option>
+                                    {% endfor %}
+                                </select>
+
+                            {% else %}
+                                <input type="text" class="form-control" name="{{ field.key }}">
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-4">
+                                Сохранить
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
         </div>
-    {% endfor %}
+    </div>
 
-    <button type="submit" class="btn btn-success">
-        Сохранить
-    </button>
-
-    <a href="{{ url_for('today_page') }}" class="btn btn-secondary ms-2">
-        Отмена
-    </a>
-
-</form>
-
+</div>
 {% endblock %}

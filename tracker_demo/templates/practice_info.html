@@ -1,44 +1,51 @@
 {% extends "layout.html" %}
+
 {% block content %}
+<div class="container py-4">
 
-<h3 class="mb-3">{{ practice.title }}</h3>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
 
-<!-- Описание -->
-<p class="text-muted">{{ practice.description }}</p>
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body p-4">
 
-<!-- Цитата -->
-{% if practice.quote %}
-<blockquote class="blockquote mt-3" style="font-size: 1rem;">
-    {{ practice.quote }}
-</blockquote>
-{% endif %}
+                    <h2 class="fw-bold mb-3">{{ practice.title }}</h2>
 
-<!-- Структура формы -->
-{% if schema %}
-    <h5 class="mt-4">Что включает практика</h5>
+                    <p class="text-muted">{{ practice.description }}</p>
 
-    <ul class="list-group mt-2">
-        {% for field in schema %}
-            <li class="list-group-item">
-                <strong>{{ field.label }}</strong>
-                <span class="text-muted">({{ field.type }})</span>
-            </li>
-        {% endfor %}
-    </ul>
-{% endif %}
+                    {% if practice.quote %}
+                    <blockquote class="blockquote mt-4">
+                        <p class="mb-0">“{{ practice.quote }}”</p>
+                    </blockquote>
+                    {% endif %}
 
+                    <hr class="my-4">
 
-<!-- Кнопки -->
-<div class="mt-4">
-    <a href="{{ url_for('practice_form', practice_id=practice.id) }}"
-       class="btn btn-success">
-        Выполнить практику
-    </a>
+                    <h5 class="fw-semibold mb-3">Что тебя ждёт в этой практике</h5>
 
-    <a href="{{ url_for('guide_page') }}"
-       class="btn btn-secondary ms-2">
-        Назад
-    </a>
+                    <ul class="list-group list-group-flush">
+                        {% for field in schema %}
+                        <li class="list-group-item">
+                            <strong>{{ field.label }}</strong>
+                            <span class="text-muted small d-block">
+                                Тип: {{ field.type }}
+                            </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('practice_form', pid=practice.id) }}"
+                           class="btn btn-primary btn-lg px-4">
+                            Выполнить практику
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>
-
 {% endblock %}

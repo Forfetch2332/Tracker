@@ -1,7 +1,23 @@
 import json
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
+
+
+class User(db.Model, UserMixin):
+    __tablename__ = "user"
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 
 class Practice(db.Model):
@@ -10,14 +26,12 @@ class Practice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(500))
-
-    # Дополнительные поля, которые ты используешь в init_practices
     quote = db.Column(db.String(500))
     form_schema_json = db.Column(db.Text)
 
 
-class Entry(db.Model):
-    __tablename__ = "entry"
+class PracticeEntry(db.Model):
+    __tablename__ = "practice_entry"
 
     id = db.Column(db.Integer, primary_key=True)
     practice_id = db.Column(db.Integer, db.ForeignKey("practice.id"), nullable=False)
@@ -32,42 +46,23 @@ class Entry(db.Model):
 
 
 def init_practices():
-    """
-    Создаёт практики, если их нет.
-    Описания расширены: передают идею автора, психологический смысл и ожидаемый эффект.
-    """
+    """Создаёт практики, если их нет."""
     if Practice.query.count() > 0:
         return
 
     practices = [
         Practice(
             title="Осознанность",
-            description=(
-                "Эта практика помогает выйти из автоматизма и вернуть себе способность выбирать. "
-                "Автор подчёркивает, что большинство реакций — это неосознанные привычки, которые "
-                "управляют поведением без участия разума. Короткие моменты наблюдения за собой "
-                "развивают внутреннюю свободу: человек замечает эмоции и мысли до того, как они "
-                "успевают захватить управление. Это снижает импульсивность, тревожность и создаёт "
-                "ощущение внутренней опоры."
-            ),
+            description="Эта практика помогает выйти из автоматизма...",
             quote="Ты становишься тем, на что направляешь внимание.",
             form_schema_json=json.dumps([
                 {"key": "reflection", "label": "Что ты заметил?", "type": "text"},
                 {"key": "emotion", "label": "Какие эмоции возникли?", "type": "text"},
             ], ensure_ascii=False)
         ),
-
         Practice(
             title="Благодарность",
-            description=(
-                "Практика благодарности переключает внимание с нехватки на изобилие. "
-                "Автор объясняет, что мозг фиксируется на том, что мы регулярно отмечаем. "
-                "Когда человек ежедневно называет три вещи, за которые он благодарен, "
-                "он тренирует способность замечать хорошее, а не только проблемы. "
-                "Это создаёт внутреннее чувство устойчивости, снижает тревожность и "
-                "повышает ощущение контроля над жизнью. Благодарность — это способ "
-                "перенастроить восприятие реальности."
-            ),
+            description="Практика благодарности переключает внимание...",
             quote="Благодарность — это магнит для хорошего.",
             form_schema_json=json.dumps([
                 {"key": "item1", "label": "Благодарность №1", "type": "text"},
@@ -75,95 +70,12 @@ def init_practices():
                 {"key": "item3", "label": "Благодарность №3", "type": "text"},
             ], ensure_ascii=False)
         ),
-
         Practice(
             title="Цель дня",
-            description=(
-                "Автор подчёркивает, что расфокусированность — главный враг личной эффективности. "
-                "Одна чёткая цель на день создаёт ясность и снижает внутренний шум. "
-                "Это не список задач, а главный вектор, который определяет, что действительно важно "
-                "именно сегодня. Такая практика формирует дисциплину, помогает избегать хаотичных "
-                "действий и создаёт ощущение движения вперёд. Маленькие ежедневные цели складываются "
-                "в большие изменения."
-            ),
+            description="Одна чёткая цель на день создаёт ясность...",
             quote="Фокус создаёт результат.",
             form_schema_json=json.dumps([
                 {"key": "goal", "label": "Главная цель дня", "type": "text"},
-            ], ensure_ascii=False)
-        ),
-
-        Practice(
-            title="Принятие ответственности",
-            description=(
-                "Эта практика помогает вернуть себе внутреннюю силу. "
-                "Ответственность — это не поиск виноватых, а способность влиять на ситуацию. "
-                "Когда человек задаёт себе вопрос «Что зависит от меня?», он перестаёт быть "
-                "жертвой обстоятельств и возвращает себе контроль."
-            ),
-            quote="Ответственность — это свобода.",
-            form_schema_json=json.dumps([
-                {"key": "event", "label": "Что произошло?", "type": "text"},
-                {"key": "control", "label": "Что зависит от меня?", "type": "text"},
-                {"key": "step", "label": "Какой шаг я могу сделать сегодня?", "type": "text"},
-            ], ensure_ascii=False)
-        ),
-
-        Practice(
-            title="Ограничивающие убеждения",
-            description=(
-                "Большинство внутренних барьеров — это не факты, а убеждения, которые человек "
-                "когда-то принял автоматически. Эта практика помогает выявлять такие установки "
-                "и заменять их на поддерживающие, создавая новые внутренние сценарии."
-            ),
-            quote="Ты не твои убеждения — ты тот, кто их выбирает.",
-            form_schema_json=json.dumps([
-                {"key": "belief", "label": "Какое убеждение всплыло сегодня?", "type": "text"},
-                {"key": "limit", "label": "Почему оно ограничивает?", "type": "text"},
-                {"key": "new_belief", "label": "Какое новое убеждение я выбираю?", "type": "text"},
-            ], ensure_ascii=False)
-        ),
-
-        Practice(
-            title="Маленькая смелость",
-            description=(
-                "Смелость — это действие несмотря на страх. Маленькие шаги за пределы зоны "
-                "комфорта укрепляют внутренний стержень и формируют уверенность. "
-                "Эта практика помогает тренировать способность действовать."
-            ),
-            quote="Смелость растёт от действия.",
-            form_schema_json=json.dumps([
-                {"key": "step", "label": "Какой маленький шаг я сделал сегодня?", "type": "text"},
-                {"key": "feeling", "label": "Что я почувствовал?", "type": "text"},
-                {"key": "result", "label": "Что это мне дало?", "type": "text"},
-            ], ensure_ascii=False)
-        ),
-
-        Practice(
-            title="Энергия дня",
-            description=(
-                "Состояние — фундамент эффективности. Эта практика помогает отслеживать, "
-                "что даёт энергию, а что забирает, чтобы управлять своим ресурсом осознанно."
-            ),
-            quote="Энергия важнее времени.",
-            form_schema_json=json.dumps([
-                {"key": "gain", "label": "Что дало мне энергию сегодня?", "type": "text"},
-                {"key": "loss", "label": "Что забрало энергию?", "type": "text"},
-                {"key": "change", "label": "Что я могу изменить завтра?", "type": "text"},
-            ], ensure_ascii=False)
-        ),
-
-        Practice(
-            title="Самоподдержка",
-            description=(
-                "Внутренний критик — главный источник самосаботажа. "
-                "Эта практика помогает развивать поддерживающий внутренний диалог, "
-                "который укрепляет, а не разрушает."
-            ),
-            quote="Будь себе союзником, а не врагом.",
-            form_schema_json=json.dumps([
-                {"key": "good", "label": "Что я сделал хорошо сегодня?", "type": "text"},
-                {"key": "improve", "label": "Что я могу улучшить без самокритики?", "type": "text"},
-                {"key": "support", "label": "Что я могу сказать себе поддерживающего?", "type": "text"},
             ], ensure_ascii=False)
         ),
     ]

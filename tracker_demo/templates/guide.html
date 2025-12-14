@@ -1,21 +1,53 @@
 {% extends "layout.html" %}
+
 {% block content %}
+<div class="container py-4">
 
-<h3 class="mb-4">Практики</h3>
+    <h2 class="mb-4 fw-bold">Справочник практик</h2>
 
-<p class="text-muted">
-    Здесь собраны описания всех практик и их смысл.
-</p>
+    <div class="accordion" id="practiceAccordion">
 
-<div class="list-group mt-3">
+        {% for practice in practices %}
+        <div class="accordion-item shadow-sm mb-3 border-0">
 
-    {% for practice in practices %}
-        <a href="{{ url_for('practice_info', pid=practice.id) }}"
-           class="list-group-item list-group-item-action">
-            {{ practice.title }}
-        </a>
-    {% endfor %}
+            <h2 class="accordion-header" id="heading{{ practice.id }}">
+                <button class="accordion-button collapsed fw-semibold"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse{{ practice.id }}"
+                        aria-expanded="false"
+                        aria-controls="collapse{{ practice.id }}">
+                    {{ practice.title }}
+                </button>
+            </h2>
+
+            <div id="collapse{{ practice.id }}"
+                 class="accordion-collapse collapse"
+                 aria-labelledby="heading{{ practice.id }}"
+                 data-bs-parent="#practiceAccordion">
+
+                <div class="accordion-body">
+
+                    <p class="text-muted">{{ practice.description }}</p>
+
+                    {% if practice.quote %}
+                    <blockquote class="blockquote mt-3">
+                        <p class="mb-0">“{{ practice.quote }}”</p>
+                    </blockquote>
+                    {% endif %}
+
+                    <a href="{{ url_for('practice_info', pid=practice.id) }}"
+                       class="btn btn-primary mt-3">
+                        Перейти к практике
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
 
 </div>
-
 {% endblock %}

@@ -1,14 +1,66 @@
 {% extends "layout.html" %}
+
 {% block content %}
+<div class="container py-4">
 
-<h3 class="mb-3">Прогресс</h3>
+    <h2 class="fw-bold mb-4">Твой прогресс</h2>
 
-<p class="text-muted">
-    Здесь в будущем появится расширенная статистика по всем практикам.
-</p>
+    <!-- Карточки статистики -->
+    <div class="row g-4 mb-4">
 
-<div class="alert alert-info mt-3">
-    Раздел находится в разработке.
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center py-4">
+                    <h3 class="fw-bold text-primary">{{ total_entries }}</h3>
+                    <p class="text-muted mb-0">Всего выполненных практик</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center py-4">
+                    <h3 class="fw-bold text-success">{{ streak }}</h3>
+                    <p class="text-muted mb-0">Дней подряд</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center py-4">
+                    <h3 class="fw-bold text-warning">{{ unique_practices }}</h3>
+                    <p class="text-muted mb-0">Разных практик выполнено</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Графики -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+
+            <h4 class="fw-semibold mb-3">Активность по дням</h4>
+
+            <div class="text-center text-muted py-5 border rounded bg-light">
+                <p class="mb-0">Здесь будет график активности (мы добавим позже)</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+
+            <h4 class="fw-semibold mb-3">Распределение практик</h4>
+
+            <div class="text-center text-muted py-5 border rounded bg-light">
+                <p class="mb-0">Здесь будет круговая диаграмма (мы добавим позже)</p>
+            </div>
+
+        </div>
+    </div>
+
 </div>
-
 {% endblock %}

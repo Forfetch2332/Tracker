@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Трекер Практик</h1>
+        <p class="lead text-muted mt-3">
+            Осознанность. Фокус. Энергия. Ответственность.
+            Преврати идеи из книги <strong>«НИ СЫ»</strong> в реальные ежедневные действия.
+        </p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body p-4">
+
+                    <h4 class="fw-semibold mb-3">Зачем это приложение?</h4>
+
+                    <p class="text-muted">
+                        Это не просто список практик.
+                        Это инструмент, который помогает:
+                    </p>
+
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">— формировать устойчивые привычки</li>
+                        <li class="list-group-item">— отслеживать своё состояние и прогресс</li>
+                        <li class="list-group-item">— развивать осознанность и внутреннюю опору</li>
+                        <li class="list-group-item">— превращать теорию в действие</li>
+                    </ul>
+
+                    <p class="text-muted">
+                        Каждый день — маленький шаг.
+                        Маленькие шаги создают большие изменения.
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{{ url_for('login_page') }}" class="btn btn-primary btn-lg px-4 me-2">
+                    Войти
+                </a>
+                <a href="{{ url_for('register_page') }}" class="btn btn-outline-secondary btn-lg px-4">
+                    Создать аккаунт
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

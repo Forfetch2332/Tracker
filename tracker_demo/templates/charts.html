@@ -1,14 +1,57 @@
 {% extends "layout.html" %}
+
 {% block content %}
+<div class="container py-4">
 
-<h3 class="mb-3">Графики</h3>
+    <h2 class="fw-bold mb-4">Графики и аналитика</h2>
 
-<p class="text-muted">
-    Здесь будут общие графики по всем практикам.
-</p>
+    <!-- График активности -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
 
-<div class="alert alert-info mt-3">
-    Раздел находится в разработке.
+            <h4 class="fw-semibold mb-3">Активность по дням</h4>
+
+            <div class="chart-placeholder text-center text-muted py-5 border rounded bg-light">
+                <p class="mb-0">Здесь будет линейный график активности</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Круговая диаграмма -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+
+            <h4 class="fw-semibold mb-3">Распределение практик</h4>
+
+            <div class="chart-placeholder text-center text-muted py-5 border rounded bg-light">
+                <p class="mb-0">Здесь будет круговая диаграмма</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Столбчатая диаграмма -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+
+            <h4 class="fw-semibold mb-3">Количество выполнений по практикам</h4>
+
+            <div class="chart-placeholder text-center text-muted py-5 border rounded bg-light">
+                <p class="mb-0">Здесь будет столбчатый график</p>
+            </div>
+
+        </div>
+    </div>
+
 </div>
 
+<style>
+.chart-placeholder {
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
 {% endblock %}
