@@ -1,55 +1,139 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container py-5">
+<style>
+.hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 35%, #0ea5a4 70%, #f97316 100%);
+    color: #fff;
+    padding: 5rem 0;
+}
+.hero h1, .hero h2, .hero p {
+    text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.badge-pill {
+    background: rgba(255,255,255,0.15);
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
+.card-soft {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.quote {
+    font-style: italic;
+    opacity: 0.95;
+}
+</style>
 
-    <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold">Трекер Практик</h1>
-        <p class="lead text-muted mt-3">
-            Осознанность. Фокус. Энергия. Ответственность.
-            Преврати идеи из книги <strong>«НИ СЫ»</strong> в реальные ежедневные действия.
-        </p>
-    </div>
+<!-- HERO SECTION -->
+<div class="hero">
+    <div class="container">
+        <div class="row align-items-center">
 
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+            <div class="col-lg-7 mb-4 mb-lg-0">
+                <h1 class="display-4 fw-bold mb-3">Трекер Практик «НИ СЫ»</h1>
 
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-body p-4">
+                <p class="lead mb-4">
+                    Если бы автор говорила с тобой сейчас, она бы сказала просто:
+                    <strong>«Хватит ждать. Хватит сомневаться. Хватит спрашивать разрешения у мира».</strong>
+                    Этот трекер — не про идеальность. Он про честность. Про движение. Про жизнь, которую ты выбираешь сам.
+                </p>
 
-                    <h4 class="fw-semibold mb-3">Зачем это приложение?</h4>
+                <div class="mb-4">
+                    <span class="badge-pill">Осознанность</span>
+                    <span class="badge-pill">Смелость</span>
+                    <span class="badge-pill">Действие</span>
+                </div>
 
-                    <p class="text-muted">
-                        Это не просто список практик.
-                        Это инструмент, который помогает:
-                    </p>
+                <p class="quote mb-4">
+                    «Ты не обязан быть готовым. Ты обязан быть живым.
+                    А живые люди делают шаги — даже когда страшно».
+                </p>
 
-                    <ul class="list-group list-group-flush mb-3">
-                        <li class="list-group-item">— формировать устойчивые привычки</li>
-                        <li class="list-group-item">— отслеживать своё состояние и прогресс</li>
-                        <li class="list-group-item">— развивать осознанность и внутреннюю опору</li>
-                        <li class="list-group-item">— превращать теорию в действие</li>
-                    </ul>
-
-                    <p class="text-muted">
-                        Каждый день — маленький шаг.
-                        Маленькие шаги создают большие изменения.
-                    </p>
-
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{{ today }}" class="btn btn-light btn-lg text-dark fw-bold px-4">Начать сегодня</a>
+                    <a href="{{ practices }}" class="btn btn-outline-light btn-lg px-4">Список практик</a>
                 </div>
             </div>
 
-            <div class="text-center mt-4">
-                <a href="{{ url_for('login_page') }}" class="btn btn-primary btn-lg px-4 me-2">
-                    Войти
-                </a>
-                <a href="{{ url_for('register_page') }}" class="btn btn-outline-secondary btn-lg px-4">
-                    Создать аккаунт
-                </a>
+            <div class="col-lg-5">
+                <div class="card card-soft shadow-sm p-4 mb-3">
+                    <h4 class="fw-semibold text-white mb-3">Что это?</h4>
+                    <p class="text-white-50">
+                        Это не приложение. Это твоя личная лаборатория изменений.
+                        Здесь ты превращаешь идеи книги в действия, а действия — в привычки.
+                        Привычки — в характер. А характер — в жизнь, которая тебе по-настоящему подходит.
+                    </p>
+                </div>
+
+                <div class="card card-soft shadow-sm p-4">
+                    <h4 class="fw-semibold text-white mb-3">Как это работает?</h4>
+                    <ol class="text-white-50 mb-0">
+                        <li>Выбираешь практику — честную, простую, выполнимую.</li>
+                        <li>Делаешь её — без перфекционизма, без драмы.</li>
+                        <li>Отмечаешь — и видишь, как маленькие шаги складываются в большие перемены.</li>
+                    </ol>
+                </div>
             </div>
 
         </div>
     </div>
-
 </div>
+
+<!-- CONTENT SECTION -->
+<div class="container py-5">
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h4 class="fw-semibold mb-3">Философия в духе автора</h4>
+                    <p class="text-muted">
+                        «НИ СЫ» — это не про то, чтобы стать кем-то другим.
+                        Это про то, чтобы перестать прятаться от себя настоящего.
+                        Про то, чтобы перестать ждать идеального момента и начать жить в этом.
+                    </p>
+                    <p class="text-muted">
+                        Автор бы сказала:
+                        <strong>«Ты не сломан. Ты просто слишком долго жил не своей жизнью».</strong>
+                        Этот трекер помогает вернуть себе право на движение — маленькими, но честными шагами.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h4 class="fw-semibold mb-3">Что мы сделали вместе</h4>
+                    <p class="text-muted">
+                        Мы взяли идеи книги и превратили их в систему:
+                    </p>
+                    <ul class="text-muted">
+                        <li>простые практики, которые можно делать каждый день</li>
+                        <li>честный трекинг состояния и прогресса</li>
+                        <li>структуру, которая поддерживает, а не давит</li>
+                        <li>интерфейс, который помогает, а не отвлекает</li>
+                    </ul>
+                    <p class="text-muted mb-0">
+                        Это не магия. Это — архитектура твоей новой жизни.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-center mt-5">
+        <a href="{{ login }}" class="btn btn-outline-primary btn-lg px-4 me-2">Войти</a>
+        <a href="{{ register }}" class="btn btn-primary btn-lg px-4">Создать аккаунт</a>
+    </div>
+
+    <p class="text-center text-muted small mt-4">
+        Сделано с уважением к идеям книги и свободой для твоего пути.
+    </p>
+</div>
+
 {% endblock %}

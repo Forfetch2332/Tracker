@@ -39,7 +39,13 @@ def load_user(user_id):
 # -----------------------------
 @app.route("/")
 def welcome_page():
-    return render_template("welcome.html")
+    return render_template(
+        "welcome.html",
+        login=url_for("login_page"),
+        register=url_for("register_page"),
+        today=url_for("today_page"),
+        practices=url_for("practice_list_page")
+    )
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -101,6 +107,11 @@ def guide_page():
     practices = Practice.query.all()
     return render_template("guide.html", practices=practices)
 
+@app.route("/practices")
+@login_required
+def practice_list_page():
+    practices = Practice.query.all()
+    return render_template("practice_list.html", practices=practices)
 
 @app.route("/practice/<int:pid>")
 @login_required
@@ -185,6 +196,7 @@ def calculate_streak(dates):
             break
 
     return streak
+
 
 @app.context_processor
 def inject_year():
