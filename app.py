@@ -60,20 +60,16 @@ def practice_list_page():
     return render_template("practice_list.html", practices=practices)
 
 
-
-
 @app.route("/practice/<int:pid>/toggle", methods=["POST"])
 def toggle_practice(pid):
     today = date.today()
 
-    # Запись за сегодня
     status = PracticeDailyStatus.query.filter_by(
         user_id=1,
         practice_id=pid,
         date=today
     ).first()
 
-    # Если ещё нет записи за сегодня — создаём
     if not status:
         status = PracticeDailyStatus(
             user_id=1,
@@ -83,12 +79,10 @@ def toggle_practice(pid):
         )
         db.session.add(status)
     else:
-        # Переключаем состояние
         status.completed = not status.completed
 
     db.session.commit()
 
-    # Пересчёт streak
     if status.completed:
         yesterday = today - timedelta(days=1)
 
@@ -103,9 +97,7 @@ def toggle_practice(pid):
     else:
         status.streak = 0
 
-    # Пересчёт прогресса
     s = status.streak
-
     status.progress_14 = min(int(s / 14 * 100), 100)
     status.progress_30 = min(int(s / 30 * 100), 100)
     status.progress_60 = min(int(s / 60 * 100), 100)
@@ -120,6 +112,7 @@ def toggle_practice(pid):
         "progress_60": status.progress_60,
         "practice_id": pid
     })
+
 
 
 

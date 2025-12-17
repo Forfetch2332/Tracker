@@ -21,7 +21,6 @@
                         {{ practice.description[:120] }}...
                     </p>
 
-                    <!-- Кнопка выполнения (AJAX) -->
                     <button
                         class="btn
                             {% if statuses.get(practice.id) %}
@@ -41,14 +40,12 @@
                         {% endif %}
                     </button>
 
-                    <!-- Streak -->
                     <div class="mt-2 small streak-block" id="streak-{{ practice.id }}">
                         {% if statuses.get(practice.id) %}
                             <span class="text-success">Серия: {{ statuses.get(practice.id).streak }} дней</span>
                         {% endif %}
                     </div>
 
-                    <!-- Прогресс 14 дней -->
                     <div class="progress mt-2" style="height: 6px;">
                         <div
                             class="progress-bar bg-success progress-14"
@@ -66,6 +63,40 @@
                         {% endif %}
                     </div>
 
+                    <div class="progress mt-2" style="height: 6px;">
+                        <div
+                            class="progress-bar bg-info progress-30"
+                            id="progress-30-{{ practice.id }}"
+                            role="progressbar"
+                            style="width: {% if statuses.get(practice.id) %}{{ statuses.get(practice.id).progress_30 }}{% else %}0{% endif %}%;">
+                        </div>
+                    </div>
+
+                    <div class="small text-muted mt-1" id="progress-text-30-{{ practice.id }}">
+                        {% if statuses.get(practice.id) %}
+                            Прогресс 30 дней: {{ statuses.get(practice.id).progress_30 }}%
+                        {% else %}
+                            Прогресс 30 дней: 0%
+                        {% endif %}
+                    </div>
+
+                    <div class="progress mt-2" style="height: 6px;">
+                        <div
+                            class="progress-bar bg-warning progress-60"
+                            id="progress-60-{{ practice.id }}"
+                            role="progressbar"
+                            style="width: {% if statuses.get(practice.id) %}{{ statuses.get(practice.id).progress_60 }}{% else %}0{% endif %}%;">
+                        </div>
+                    </div>
+
+                    <div class="small text-muted mt-1" id="progress-text-60-{{ practice.id }}">
+                        {% if statuses.get(practice.id) %}
+                            Прогресс 60 дней: {{ statuses.get(practice.id).progress_60 }}%
+                        {% else %}
+                            Прогресс 60 дней: 0%
+                        {% endif %}
+                    </div>
+
                 </div>
 
             </div>
@@ -76,7 +107,6 @@
 
 </div>
 
-<!-- Подключим JS для AJAX -->
 <script src="{{ url_for('static', filename='js/today.js') }}"></script>
 
 {% endblock %}

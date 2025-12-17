@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Находим все кнопки выполнения
     const buttons = document.querySelectorAll(".toggle-btn");
 
     buttons.forEach(btn => {
@@ -8,27 +7,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const practiceId = btn.dataset.practiceId;
 
-            // Отправляем AJAX POST
             const response = await fetch(`/practice/${practiceId}/toggle`, {
                 method: "POST"
             });
 
             const data = await response.json();
 
-            // Обновляем кнопку
             updateButton(btn, data);
-
-            // Обновляем streak
             updateStreak(data);
-
-            // Обновляем прогресс
             updateProgress(data);
         });
     });
 });
 
 
-// ✅ Обновление кнопки
 function updateButton(btn, data) {
     const completed = data.completed;
 
@@ -44,25 +36,19 @@ function updateButton(btn, data) {
         btn.dataset.completed = "0";
     }
 
-    // ✅ Обновляем карточку
     updateCard(btn, completed);
 }
 
 
-// ✅ Анимация карточки
 function updateCard(btn, completed) {
-    // Находим карточку (btn → card-body → card)
     const card = btn.closest(".card");
 
     if (!card) return;
 
     if (completed) {
         card.classList.add("completed");
-
-        // Добавляем анимацию "пульса"
         card.classList.add("completed-animate");
 
-        // Убираем класс анимации через 300 мс
         setTimeout(() => {
             card.classList.remove("completed-animate");
         }, 300);
@@ -73,8 +59,6 @@ function updateCard(btn, completed) {
 }
 
 
-
-// ✅ Обновление streak
 function updateStreak(data) {
     const block = document.getElementById(`streak-${data.practice_id}`);
 
@@ -86,14 +70,25 @@ function updateStreak(data) {
 }
 
 
-// ✅ Обновление прогресса
 function updateProgress(data) {
-    const bar = document.getElementById(`progress-14-${data.practice_id}`);
-    const text = document.getElementById(`progress-text-14-${data.practice_id}`);
+    const bar14 = document.getElementById(`progress-14-${data.practice_id}`);
+    const text14 = document.getElementById(`progress-text-14-${data.practice_id}`);
 
-    // Плавная анимация
-    bar.style.transition = "width 0.4s ease";
-    bar.style.width = `${data.progress_14}%`;
+    bar14.style.transition = "width 0.4s ease";
+    bar14.style.width = `${data.progress_14}%`;
+    text14.innerText = `Прогресс 14 дней: ${data.progress_14}%`;
 
-    text.innerText = `Прогресс 14 дней: ${data.progress_14}%`;
+    const bar30 = document.getElementById(`progress-30-${data.practice_id}`);
+    const text30 = document.getElementById(`progress-text-30-${data.practice_id}`);
+
+    bar30.style.transition = "width 0.4s ease";
+    bar30.style.width = `${data.progress_30}%`;
+    text30.innerText = `Прогресс 30 дней: ${data.progress_30}%`;
+
+    const bar60 = document.getElementById(`progress-60-${data.practice_id}`);
+    const text60 = document.getElementById(`progress-text-60-${data.practice_id}`);
+
+    bar60.style.transition = "width 0.4s ease";
+    bar60.style.width = `${data.progress_60}%`;
+    text60.innerText = `Прогресс 60 дней: ${data.progress_60}%`;
 }
