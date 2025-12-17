@@ -1,9 +1,8 @@
 import json
 import os
 from datetime import datetime, date, timedelta
-
 from dotenv import load_dotenv
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, jsonify
 from flask_migrate import Migrate
 
 from models import db, Practice, PracticeDailyStatus
@@ -61,16 +60,20 @@ def practice_list_page():
     return render_template("practice_list.html", practices=practices)
 
 
+
+
 @app.route("/practice/<int:pid>/toggle", methods=["POST"])
 def toggle_practice(pid):
     today = date.today()
 
+    # Запись за сегодня
     status = PracticeDailyStatus.query.filter_by(
         user_id=1,
         practice_id=pid,
         date=today
     ).first()
 
+    # Если ещё нет записи за сегодня — создаём
     if not status:
         status = PracticeDailyStatus(
             user_id=1,
@@ -80,32 +83,44 @@ def toggle_practice(pid):
         )
         db.session.add(status)
     else:
+        # Переключаем состояние
         status.completed = not status.completed
 
     db.session.commit()
 
-    # streak
+    # Пересчёт streak
     if status.completed:
         yesterday = today - timedelta(days=1)
+
         prev = PracticeDailyStatus.query.filter_by(
             user_id=1,
             practice_id=pid,
             date=yesterday,
             completed=True
         ).first()
+
         status.streak = (prev.streak + 1) if prev else 1
     else:
         status.streak = 0
 
-    # progress
+    # Пересчёт прогресса
     s = status.streak
+
     status.progress_14 = min(int(s / 14 * 100), 100)
     status.progress_30 = min(int(s / 30 * 100), 100)
     status.progress_60 = min(int(s / 60 * 100), 100)
 
     db.session.commit()
 
-    return redirect(url_for("today_page"))
+    return jsonify({
+        "completed": status.completed,
+        "streak": status.streak,
+        "progress_14": status.progress_14,
+        "progress_30": status.progress_30,
+        "progress_60": status.progress_60,
+        "practice_id": pid
+    })
+
 
 
 

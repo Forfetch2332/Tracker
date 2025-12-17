@@ -21,46 +21,50 @@
                         {{ practice.description[:120] }}...
                     </p>
 
-                    <!-- Кнопка выполнения -->
-                    <form method="post"
-                          action="{{ url_for('toggle_practice', pid=practice.id) }}"
-                          class="mt-auto">
-
-                        <button class="btn
+                    <!-- Кнопка выполнения (AJAX) -->
+                    <button
+                        class="btn
                             {% if statuses.get(practice.id) %}
                                 btn-success
                             {% else %}
                                 btn-outline-secondary
                             {% endif %}
-                            w-100">
+                            w-100 toggle-btn"
 
-                            {% if statuses.get(practice.id) %}
-                                ✅ Выполнено
-                            {% else %}
-                                ○ Отметить выполнение
-                            {% endif %}
-                        </button>
-
-                    </form>
+                        data-practice-id="{{ practice.id }}"
+                        data-completed="{% if statuses.get(practice.id) %}1{% else %}0{% endif %}"
+                    >
+                        {% if statuses.get(practice.id) %}
+                            ✅ Выполнено
+                        {% else %}
+                            ○ Отметить выполнение
+                        {% endif %}
+                    </button>
 
                     <!-- Streak -->
-                    {% if statuses.get(practice.id) %}
-                        <div class="mt-2 text-success small">
-                            Серия: {{ statuses.get(practice.id).streak }} дней
-                        </div>
+                    <div class="mt-2 small streak-block" id="streak-{{ practice.id }}">
+                        {% if statuses.get(practice.id) %}
+                            <span class="text-success">Серия: {{ statuses.get(practice.id).streak }} дней</span>
+                        {% endif %}
+                    </div>
 
-                        <!-- Прогресс 14 дней -->
-                        <div class="progress mt-2" style="height: 6px;">
-                            <div class="progress-bar bg-success"
-                                 role="progressbar"
-                                 style="width: {{ statuses.get(practice.id).progress_14 }}%;">
-                            </div>
+                    <!-- Прогресс 14 дней -->
+                    <div class="progress mt-2" style="height: 6px;">
+                        <div
+                            class="progress-bar bg-success progress-14"
+                            id="progress-14-{{ practice.id }}"
+                            role="progressbar"
+                            style="width: {% if statuses.get(practice.id) %}{{ statuses.get(practice.id).progress_14 }}{% else %}0{% endif %}%;">
                         </div>
+                    </div>
 
-                        <div class="small text-muted mt-1">
+                    <div class="small text-muted mt-1" id="progress-text-14-{{ practice.id }}">
+                        {% if statuses.get(practice.id) %}
                             Прогресс 14 дней: {{ statuses.get(practice.id).progress_14 }}%
-                        </div>
-                    {% endif %}
+                        {% else %}
+                            Прогресс 14 дней: 0%
+                        {% endif %}
+                    </div>
 
                 </div>
 
@@ -71,4 +75,8 @@
     </div>
 
 </div>
+
+<!-- Подключим JS для AJAX -->
+<script src="{{ url_for('static', filename='js/today.js') }}"></script>
+
 {% endblock %}
