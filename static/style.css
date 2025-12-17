@@ -65,6 +65,10 @@ form label {
 .alert {
     font-size: 0.95rem;
 }
+.alert-success {
+    border-left: 6px solid #28a745;
+}
+
 
 /* -----------------------------------
    Навигация

@@ -6,6 +6,12 @@
     <h2 class="mb-4 fw-bold">Практики на сегодня</h2>
 
     <div class="row g-4">
+        {% if motivation %}
+<div class="alert alert-success shadow-sm p-3 mb-4">
+    <h5 class="fw-bold mb-2">Мотивация</h5>
+    <div>{{ motivation }}</div>
+</div>
+{% endif %}
 
         {% for practice in practices %}
         <div class="col-md-6 col-lg-4">

@@ -153,3 +153,13 @@ class PracticeDailyStatus(db.Model):
 
     def __repr__(self):
         return f"<DailyStatus practice={self.practice_id} date={self.date} completed={self.completed}>"
+
+
+class Hint(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text, nullable=False)
+
+
+class Example(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text, nullable=False)
