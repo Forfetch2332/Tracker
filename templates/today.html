@@ -5,13 +5,31 @@
 
     <h2 class="mb-4 fw-bold">Практики на сегодня</h2>
 
+    <!-- ✅ Подсказка дня -->
+    {% if hint_of_day %}
+    <div class="alert alert-info shadow-sm p-3 mb-3">
+        <h5 class="fw-bold mb-2">Подсказка дня</h5>
+        <div>{{ hint_of_day.text }}</div>
+    </div>
+    {% endif %}
+
+    <!-- ✅ Пример дня -->
+    {% if example_of_day %}
+    <div class="alert alert-secondary shadow-sm p-3 mb-3">
+        <h5 class="fw-bold mb-2">Пример дня</h5>
+        <div>{{ example_of_day.text }}</div>
+    </div>
+    {% endif %}
+
+    <!-- ✅ Мотивация -->
+    {% if motivation %}
+    <div class="alert alert-success shadow-sm p-3 mb-4">
+        <h5 class="fw-bold mb-2">Мотивация</h5>
+        <div>{{ motivation }}</div>
+    </div>
+    {% endif %}
+
     <div class="row g-4">
-        {% if motivation %}
-<div class="alert alert-success shadow-sm p-3 mb-4">
-    <h5 class="fw-bold mb-2">Мотивация</h5>
-    <div>{{ motivation }}</div>
-</div>
-{% endif %}
 
         {% for practice in practices %}
         <div class="col-md-6 col-lg-4">
@@ -46,12 +64,14 @@
                         {% endif %}
                     </button>
 
+                    <!-- ✅ streak -->
                     <div class="mt-2 small streak-block" id="streak-{{ practice.id }}">
                         {% if statuses.get(practice.id) %}
                             <span class="text-success">Серия: {{ statuses.get(practice.id).streak }} дней</span>
                         {% endif %}
                     </div>
 
+                    <!-- ✅ Прогресс 14 -->
                     <div class="progress mt-2" style="height: 6px;">
                         <div
                             class="progress-bar bg-success progress-14"
@@ -60,7 +80,6 @@
                             style="width: {% if statuses.get(practice.id) %}{{ statuses.get(practice.id).progress_14 }}{% else %}0{% endif %}%;">
                         </div>
                     </div>
-
                     <div class="small text-muted mt-1" id="progress-text-14-{{ practice.id }}">
                         {% if statuses.get(practice.id) %}
                             Прогресс 14 дней: {{ statuses.get(practice.id).progress_14 }}%
@@ -69,6 +88,7 @@
                         {% endif %}
                     </div>
 
+                    <!-- ✅ Прогресс 30 -->
                     <div class="progress mt-2" style="height: 6px;">
                         <div
                             class="progress-bar bg-info progress-30"
@@ -77,7 +97,6 @@
                             style="width: {% if statuses.get(practice.id) %}{{ statuses.get(practice.id).progress_30 }}{% else %}0{% endif %}%;">
                         </div>
                     </div>
-
                     <div class="small text-muted mt-1" id="progress-text-30-{{ practice.id }}">
                         {% if statuses.get(practice.id) %}
                             Прогресс 30 дней: {{ statuses.get(practice.id).progress_30 }}%
@@ -86,6 +105,7 @@
                         {% endif %}
                     </div>
 
+                    <!-- ✅ Прогресс 60 -->
                     <div class="progress mt-2" style="height: 6px;">
                         <div
                             class="progress-bar bg-warning progress-60"
@@ -94,7 +114,6 @@
                             style="width: {% if statuses.get(practice.id) %}{{ statuses.get(practice.id).progress_60 }}{% else %}0{% endif %}%;">
                         </div>
                     </div>
-
                     <div class="small text-muted mt-1" id="progress-text-60-{{ practice.id }}">
                         {% if statuses.get(practice.id) %}
                             Прогресс 60 дней: {{ statuses.get(practice.id).progress_60 }}%

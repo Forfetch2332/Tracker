@@ -65,10 +65,21 @@ form label {
 .alert {
     font-size: 0.95rem;
 }
+
+/* ✅ Мотивация */
 .alert-success {
     border-left: 6px solid #28a745;
 }
 
+/* ✅ Подсказка дня */
+.alert-info {
+    border-left: 6px solid #0d6efd;
+}
+
+/* ✅ Пример дня */
+.alert-secondary {
+    border-left: 6px solid #6c757d;
+}
 
 /* -----------------------------------
    Навигация
