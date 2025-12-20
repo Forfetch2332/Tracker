@@ -231,11 +231,51 @@ def api_progress(practice_id):
     })
 @app.route("/analytics")
 def analytics_page():
-    """
-    Страница аналитики: сводные графики и статистика по всем практикам.
-    """
     practices = Practice.query.all()
-    return render_template("analytics.html", practices=practices)
+
+    # Преобразуем объекты Practice в словари для JSON
+    practices_data = [
+        {
+            "id": p.id,
+            "title": p.title,
+            "color": p.color
+        }
+        for p in practices
+    ]
+
+    return render_template(
+        "analytics.html",
+        practices=practices,          # для цикла {% for practice in practices %}
+        practices_data=practices_data # для передачи в JS
+    )
+
+
+@app.route("/history")
+def history_page():
+    today = date.today()
+    start = today - timedelta(days=29)
+
+    statuses = (
+        db.session.query(PracticeDailyStatus, Practice)
+        .join(Practice, PracticeDailyStatus.practice_id == Practice.id)
+        .filter(
+            PracticeDailyStatus.user_id == 1,
+            PracticeDailyStatus.date >= start,
+            PracticeDailyStatus.date <= today
+        )
+        .order_by(PracticeDailyStatus.date.desc())
+        .all()
+    )
+
+    history = {}
+    for s, p in statuses:
+        history.setdefault(s.date, []).append({
+            "practice_title": p.title,
+            "practice_color": p.color,
+            "completed": s.completed
+        })
+
+    return render_template("history.html", history=history)
 
 # ---------------------------------------------------------
 # Контекстные процессоры

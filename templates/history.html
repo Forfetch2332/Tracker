@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4 fw-bold">История выполнения</h2>
+
+    {% if history %}
+        {% for dt, statuses in history.items() %}
+        <div class="card mb-3 shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title">{{ dt.strftime("%d.%m.%Y") }}</h5>
+                <ul class="list-group list-group-flush">
+                    {% for s in statuses %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span style="color: {{ s.practice_color }};">{{ s.practice_title }}</span>
+                        {% if s.completed %}
+                            <span class="badge bg-success">Выполнено</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Пропущено</span>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">История пока пуста.</div>
+    {% endif %}
+</div>
+{% endblock %}

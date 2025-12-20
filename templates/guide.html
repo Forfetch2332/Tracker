@@ -43,6 +43,12 @@
                     </ul>
                     {% endif %}
 
+                    <!-- Кнопка перехода к прогрессу -->
+                    <a href="{{ url_for('progress_page') }}?practice_id={{ p.id }}"
+                       class="btn btn-outline-primary btn-sm mt-3">
+                        Открыть прогресс
+                    </a>
+
                 </div>
 
             </div>
