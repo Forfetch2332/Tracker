@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4 fw-bold">Аналитика</h2>
+
+    <p class="text-muted">Здесь собраны графики и статистика по всем практикам.</p>
+
+    <div class="row g-4">
+        {% for p in practices %}
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold" style="color: {{ p.color }};">
+                        {{ p.title }}
+                    </h5>
+                    {% if p.description %}
+                        <p class="text-muted small">{{ p.description }}</p>
+                    {% endif %}
+
+                    <!-- Контейнер для графика -->
+                    <canvas id="chart-{{ p.id }}" height="120"></canvas>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+<script>
+    window.ANALYTICS_PRACTICES = {{ practices|tojson }};
+</script>
+{% endblock %}

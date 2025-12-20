@@ -229,6 +229,13 @@ def api_progress(practice_id):
         "completed": completed,
         "streak": streak
     })
+@app.route("/analytics")
+def analytics_page():
+    """
+    Страница аналитики: сводные графики и статистика по всем практикам.
+    """
+    practices = Practice.query.all()
+    return render_template("analytics.html", practices=practices)
 
 # ---------------------------------------------------------
 # Контекстные процессоры
