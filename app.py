@@ -1,7 +1,7 @@
 import os
 from datetime import datetime, date, timedelta
 from dotenv import load_dotenv
-from flask import Flask, render_template, url_for, redirect, jsonify
+from flask import Flask, render_template, url_for, redirect, jsonify, request
 from flask_migrate import Migrate
 
 from models import db, Practice, PracticeDailyStatus, Hint, Example
@@ -167,6 +167,68 @@ def toggle_practice(pid):
         "practice_id": pid
     })
 
+@app.route("/progress")
+def progress_page():
+    """
+    Страница визуализации прогресса: выбор практики и график.
+    """
+    practices = Practice.query.all()
+    practice_id = request.args.get("practice_id", type=int)
+    selected = None
+    if practice_id:
+        selected = Practice.query.get(practice_id)
+    return render_template(
+        "progress.html",
+        practices=practices,
+        selected_practice=selected
+    )
+
+
+@app.route("/api/progress/<int:practice_id>")
+def api_progress(practice_id):
+    """
+    JSON-данные для графика: последние 60 дней.
+    """
+    today = date.today()
+    start = today - timedelta(days=59)
+
+    statuses = (
+        PracticeDailyStatus.query
+        .filter(
+            PracticeDailyStatus.user_id == 1,
+            PracticeDailyStatus.practice_id == practice_id,
+            PracticeDailyStatus.date >= start,
+            PracticeDailyStatus.date <= today
+        )
+        .order_by(PracticeDailyStatus.date.asc())
+        .all()
+    )
+
+    by_date = {s.date: s for s in statuses}
+
+    dates, completed, streak = [], [], []
+    current_streak = 0
+
+    for i in range(60):
+        dt = start + timedelta(days=i)
+        dates.append(dt.isoformat())
+
+        st = by_date.get(dt)
+        if st and st.completed:
+            completed.append(1)
+            current_streak = st.streak if st.streak is not None else current_streak + 1
+        else:
+            completed.append(0)
+            current_streak = 0
+
+        streak.append(current_streak)
+
+    return jsonify({
+        "practice_id": practice_id,
+        "dates": dates,
+        "completed": completed,
+        "streak": streak
+    })
 
 # ---------------------------------------------------------
 # Контекстные процессоры
